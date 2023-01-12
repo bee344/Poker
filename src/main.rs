@@ -16,7 +16,7 @@ fn main() {
 
     let mut VRF_seed = &0u8;
     let mut player_choice = String::new();
-    let mut choices = [0u8; 8];
+    let mut choices: Vec<u8> = vec![];
     let mut round: usize = 1;
     let keys = gen_keypairs();
     let mut draw;
@@ -35,9 +35,9 @@ fn main() {
                     );
                     let mut stdin = io::stdin();
                     stdin.read_line(&mut player_choice);
-                    println!("Your choice was {:?}: ", player_choice);
                     let mut input = player_choice.trim();
-                    choices[turn - 1] = input.parse().unwrap();
+                    println!("Your choice was {:?}: ", input);
+                    choices.push(input.parse().unwrap());
                     turn += 2;
                     player_choice = String::new();
                 }
@@ -48,9 +48,9 @@ fn main() {
                     );
                     let mut stdin = io::stdin();
                     stdin.read_line(&mut player_choice);
-                    println!("Your choice was {:?}: ", player_choice);
                     let mut input = player_choice.trim();
-                    choices[turn - 1] = input.parse().unwrap();
+                    println!("Your choice was {:?}: ", input);
+                    choices.push(input.parse().unwrap());
                     turn += 1;
                     player_choice = String::new();
                 }
@@ -61,16 +61,16 @@ fn main() {
                     );
                     let mut stdin = io::stdin();
                     stdin.read_line(&mut player_choice);
-                    println!("Your choice was {:?}: ", player_choice);
                     let mut input = player_choice.trim();
-                    choices[turn - 1] = input.parse().unwrap();
+                    println!("Your choice was {:?}: ", input);
+                    choices.push(input.parse().unwrap());
                     turn += 1;
                     player_choice = String::new();
                 }
             }
         }
         let mut rng = rand::thread_rng();
-        VRF_seed = &choices[rng.gen_range(0, 6)];
+        VRF_seed = &choices[rng.gen_range(0, (round * 7))];
 
         draw = draws(&keys[round - 1], VRF_seed);
 
